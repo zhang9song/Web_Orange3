@@ -25,7 +25,6 @@ const NodeComponent: React.FC<NodeComponentProps> = memo(({
 
   const Icon = definition.icon;
   const baseColorClasses = definition.color; 
-  // e.g. "bg-red-100 border-red-300 text-red-700"
 
   // Handle styles
   const handleStyle = (isInput: boolean) => 
@@ -33,10 +32,8 @@ const NodeComponent: React.FC<NodeComponentProps> = memo(({
 
   const handleMouseDown = (e: React.MouseEvent, handleId: string, type: 'input' | 'output') => {
     e.stopPropagation();
-    // Calculate absolute position of the handle for the line start
-    const rect = (e.target as HTMLElement).getBoundingClientRect();
-    // We need coordinates relative to the canvas container, but rect is viewport.
-    // The parent calling this will handle coordinate translation if we pass the clientX/Y
+    // We pass client coordinates to start the drag visually from the mouse pointer
+    // The Canvas will calculate the line start.
     onStartConnection(node.id, handleId, type, e.clientX, e.clientY);
   };
 
@@ -56,28 +53,29 @@ const NodeComponent: React.FC<NodeComponentProps> = memo(({
       }}
       onMouseDown={(e) => onMouseDown(e, node.id)}
     >
-      {/* Selection outline */}
+      {/* Selection outline & Main Card */}
       <div 
         className={`
           relative w-full bg-white rounded-lg shadow-sm border 
           ${selected ? 'border-orange-500 ring-2 ring-orange-200' : 'border-gray-300'}
           transition-all duration-200 overflow-visible
+          h-[100px] flex flex-col
         `}
       >
         {/* Header / Icon */}
-        <div className={`flex flex-col items-center justify-center p-3 rounded-t-lg ${baseColorClasses.split(' ')[0]}`}>
+        <div className={`flex-shrink-0 flex flex-col items-center justify-center p-3 rounded-t-lg ${baseColorClasses.split(' ')[0]}`}>
            <Icon size={24} className={baseColorClasses.split(' ')[2]} />
         </div>
         
         {/* Title */}
-        <div className="px-2 py-2 text-center">
-          <p className="text-xs font-semibold text-gray-700 truncate">{node.label || definition.name}</p>
+        <div className="px-2 py-2 text-center flex-1 flex items-center justify-center overflow-hidden">
+          <p className="text-xs font-semibold text-gray-700 truncate w-full" title={node.label || definition.name}>
+            {node.label || definition.name}
+          </p>
         </div>
 
         {/* Inputs (Left side) */}
         {definition.inputs.map((input, index) => {
-          // Distribute handles evenly vertically if multiple? For now just stack or center.
-          // Orange3 usually puts inputs on the left, outputs on right.
           const topPercent = definition.inputs.length === 1 ? 50 : (100 / (definition.inputs.length + 1)) * (index + 1);
           return (
             <div
