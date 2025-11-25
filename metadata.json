@@ -1,0 +1,5 @@
+{
+  "name": "Orange3-Web",
+  "description": "A web-based visual programming interface inspired by Orange3 Data Mining, powered by Gemini for workflow analysis and code generation.",
+  "requestFramePermissions": []
+}
