@@ -2,6 +2,7 @@ import React from 'react';
 
 export enum WidgetCategory {
   DATA = 'Data',
+  PREPROCESS = 'Preprocess',
   VISUALIZE = 'Visualize',
   MODEL = 'Model',
   EVALUATE = 'Evaluate',

@@ -1,7 +1,8 @@
 import { WidgetCategory, WidgetDefinition } from './types';
 import { 
   FileText, Table, Filter, BarChart, ScatterChart, PieChart, 
-  Binary, GitBranch, Target, Zap, Activity, Grid 
+  Binary, GitBranch, Target, Zap, Activity, Grid,
+  Sliders, Wand2, Scissors, RefreshCw
 } from 'lucide-react';
 
 export const WIDGETS: Record<string, WidgetDefinition> = {
@@ -33,6 +34,48 @@ export const WIDGETS: Record<string, WidgetDefinition> = {
     icon: Filter,
     color: 'bg-red-100 border-red-300 text-red-700',
     description: 'Select features and target variable manually.',
+    inputs: [{ id: 'in_data', label: 'Data', type: 'input' }],
+    outputs: [{ id: 'out_data', label: 'Data', type: 'output' }]
+  },
+
+  // --- PREPROCESS ---
+  'preprocess': {
+    type: 'preprocess',
+    name: 'Preprocess',
+    category: WidgetCategory.PREPROCESS,
+    icon: Sliders,
+    color: 'bg-pink-100 border-pink-300 text-pink-700',
+    description: 'Preprocesses data with selected methods.',
+    inputs: [{ id: 'in_data', label: 'Data', type: 'input' }],
+    outputs: [{ id: 'out_pre_data', label: 'Preprocessed Data', type: 'output' }]
+  },
+  'impute': {
+    type: 'impute',
+    name: 'Impute',
+    category: WidgetCategory.PREPROCESS,
+    icon: Wand2,
+    color: 'bg-pink-100 border-pink-300 text-pink-700',
+    description: 'Impute missing values in the data.',
+    inputs: [{ id: 'in_data', label: 'Data', type: 'input' }],
+    outputs: [{ id: 'out_data', label: 'Data', type: 'output' }]
+  },
+  'discretize': {
+    type: 'discretize',
+    name: 'Discretize',
+    category: WidgetCategory.PREPROCESS,
+    icon: Scissors,
+    color: 'bg-pink-100 border-pink-300 text-pink-700',
+    description: 'Discretize continuous attributes.',
+    inputs: [{ id: 'in_data', label: 'Data', type: 'input' }],
+    outputs: [{ id: 'out_data', label: 'Data', type: 'output' }]
+  },
+  'continuize': {
+    type: 'continuize',
+    name: 'Continuize',
+    category: WidgetCategory.PREPROCESS,
+    icon: RefreshCw,
+    color: 'bg-pink-100 border-pink-300 text-pink-700',
+    description: 'Turn discrete attributes into continuous.',
     inputs: [{ id: 'in_data', label: 'Data', type: 'input' }],
     outputs: [{ id: 'out_data', label: 'Data', type: 'output' }]
   },
@@ -122,6 +165,7 @@ export const WIDGETS: Record<string, WidgetDefinition> = {
 
 export const CATEGORY_COLORS: Record<WidgetCategory, string> = {
   [WidgetCategory.DATA]: 'bg-red-500',
+  [WidgetCategory.PREPROCESS]: 'bg-pink-500',
   [WidgetCategory.VISUALIZE]: 'bg-blue-500',
   [WidgetCategory.MODEL]: 'bg-green-500',
   [WidgetCategory.EVALUATE]: 'bg-yellow-500',
